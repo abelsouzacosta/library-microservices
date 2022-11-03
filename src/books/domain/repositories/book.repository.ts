@@ -26,4 +26,8 @@ export class BookRepository {
 
     return books;
   }
+
+  async findById(id: string): Promise<Book> {
+    return this.model.findById(id);
+  }
 }

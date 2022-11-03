@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import { RpcException } from '@nestjs/microservices';
 import { CreateBookDto } from './domain/dto/create-book.dto';
 import { BookRepository } from './domain/repositories/book.repository';
 
@@ -12,5 +13,13 @@ export class BooksService {
 
   list() {
     return this.repository.list();
+  }
+
+  async findById(id: string) {
+    const book = await this.repository.findById(id);
+
+    if (!book) throw new RpcException(`Book ${id} not found`);
+
+    return book;
   }
 }

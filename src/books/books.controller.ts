@@ -17,4 +17,9 @@ export class BooksController {
   list() {
     return this.booksService.list();
   }
+
+  @MessagePattern(MessagePatterns.GET_CATEGORY)
+  findById(@Payload() id: string) {
+    return this.booksService.findById(id);
+  }
 }
