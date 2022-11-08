@@ -3,6 +3,7 @@ import { MessagePattern, Payload } from '@nestjs/microservices';
 import { MessagePatterns } from 'src/common/constants/enums/message-patterns.enum';
 import { BooksService } from './books.service';
 import { CreateBookDto } from './domain/dto/create-book.dto';
+import { UpdateBookOperation } from './domain/dto/update-book-operation.dto';
 
 @Controller()
 export class BooksController {
@@ -21,5 +22,10 @@ export class BooksController {
   @MessagePattern(MessagePatterns.GET_BOOK)
   findById(@Payload() id: string) {
     return this.booksService.findById(id);
+  }
+
+  @MessagePattern(MessagePatterns.UPDATE_BOOK)
+  update(@Payload() data: UpdateBookOperation) {
+    return this.booksService.update(data);
   }
 }
