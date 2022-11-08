@@ -1,10 +1,12 @@
 import { RpcException } from '@nestjs/microservices';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
+import { Model, UpdateWriteOpResult } from 'mongoose';
 import { Book } from 'src/books/entities/book.entity';
+import { IRepositoryInterface } from 'src/common/interfaces/repository.interface';
 import { CreateBookDto } from '../dto/create-book.dto';
+import { UpdateBookDto } from '../dto/update-book.dto';
 
-export class BookRepository {
+export class BookRepository implements IRepositoryInterface {
   constructor(
     @InjectModel(Book.name)
     private readonly model: Model<Book>,
@@ -29,5 +31,16 @@ export class BookRepository {
 
   async findById(id: string): Promise<Book> {
     return this.model.findById(id);
+  }
+
+  async update(id: string, data: UpdateBookDto): Promise<UpdateWriteOpResult> {
+    return this.model.updateOne(
+      {
+        _id: id,
+      },
+      {
+        ...data,
+      },
+    );
   }
 }
