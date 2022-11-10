@@ -43,4 +43,8 @@ export class BookRepository implements IRepositoryInterface {
       },
     );
   }
+
+  async delete(id: string): Promise<any> {
+    return this.model.deleteOne({ _id: id });
+  }
 }

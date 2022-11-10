@@ -29,4 +29,8 @@ export class BooksService {
 
     await this.repository.update(data.id, data.data);
   }
+
+  async delete(id: string) {
+    await this.repository.delete(id);
+  }
 }

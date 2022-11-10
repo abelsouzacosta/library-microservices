@@ -56,4 +56,18 @@ export class BooksController {
       await channel.ack(message);
     }
   }
+
+  @EventPattern(EventPatterns.DELETE_BOOK)
+  async delete(@Payload() id: string, @Ctx() context: RmqContext) {
+    const channel = context.getChannelRef();
+    const message = context.getMessage();
+
+    try {
+      await this.service.delete(id);
+
+      await channel.ack(message);
+    } catch (error) {
+      await channel.ack(message);
+    }
+  }
 }
