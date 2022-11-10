@@ -12,6 +12,7 @@ async function bootstrap() {
       options: {
         urls: [RABBITMQ_URL],
         queue: Queues.BOOKS,
+        noAck: false,
       },
     },
   );
