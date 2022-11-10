@@ -6,7 +6,7 @@ import {
   Payload,
   RmqContext,
 } from '@nestjs/microservices';
-import { EventPatterns } from 'src/common/constants/enums/event-atterns.enum';
+import { EventPatterns } from 'src/common/constants/enums/event-patterns.enum';
 import { MessagePatterns } from 'src/common/constants/enums/message-patterns.enum';
 import { BooksService } from './books.service';
 import { CreateBookDto } from './domain/dto/create-book.dto';
