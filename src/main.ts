@@ -11,7 +11,7 @@ async function bootstrap() {
       transport: Transport.RMQ,
       options: {
         urls: [RABBITMQ_URL],
-        queue: Queues.BOOKS,
+        queue: Queues.LIBRARY,
         noAck: false,
       },
     },

@@ -1,35 +1,51 @@
 import { Controller } from '@nestjs/common';
-import { MessagePattern, Payload } from '@nestjs/microservices';
+import {
+  Ctx,
+  EventPattern,
+  MessagePattern,
+  Payload,
+  RmqContext,
+} from '@nestjs/microservices';
+import { EventPatterns } from 'src/common/constants/enums/event-patterns.enum';
+import { MessagePatterns } from 'src/common/constants/enums/message-patterns.enum';
 import { CategoryService } from './category.service';
 import { CreateCategoryDto } from './domain/dto/create-category.dto';
 import { UpdateCategoryDto } from './domain/dto/update-category.dto';
 
 @Controller()
 export class CategoryController {
-  constructor(private readonly categoryService: CategoryService) {}
+  constructor(private readonly service: CategoryService) {}
 
-  @MessagePattern('createCategory')
-  create(@Payload() createCategoryDto: CreateCategoryDto) {
-    return this.categoryService.create(createCategoryDto);
+  @EventPattern(EventPatterns.CREATE_CATEGORY)
+  async create(@Payload() data: CreateCategoryDto, @Ctx() context: RmqContext) {
+    const channel = context.getChannelRef();
+    const message = context.getMessage();
+    try {
+      await this.service.create(data);
+
+      await channel.ack(message);
+    } catch (error) {
+      await channel.ack(message);
+    }
   }
 
-  @MessagePattern('findAllCategory')
+  @MessagePattern(MessagePatterns.LIST_CATEGORIES)
   findAll() {
-    return this.categoryService.findAll();
+    return this.service.findAll();
   }
 
   @MessagePattern('findOneCategory')
   findOne(@Payload() id: number) {
-    return this.categoryService.findOne(id);
+    return this.service.findOne(id);
   }
 
   @MessagePattern('updateCategory')
   update(@Payload() updateCategoryDto: UpdateCategoryDto) {
-    return this.categoryService.update(updateCategoryDto.id, updateCategoryDto);
+    return this.service.update(updateCategoryDto.id, updateCategoryDto);
   }
 
   @MessagePattern('removeCategory')
   remove(@Payload() id: number) {
-    return this.categoryService.remove(id);
+    return this.service.remove(id);
   }
 }

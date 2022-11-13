@@ -7,7 +7,7 @@ import { Book } from 'src/books/entities/book.entity';
   collection: 'categories',
 })
 export class Category {
-  @Prop({ required: true, type: String })
+  @Prop({ required: true, type: String, index: true })
   name: string;
 
   @Prop({ required: false, type: mongoose.Types.ObjectId, ref: 'Book' })
