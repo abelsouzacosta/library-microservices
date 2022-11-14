@@ -27,4 +27,8 @@ export class CategoryRepository implements IRepositoryInterface {
 
     return categories;
   }
+
+  async findById(id: string): Promise<Category> {
+    return this.model.findById(id);
+  }
 }
